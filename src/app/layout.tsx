@@ -2,7 +2,8 @@ import type { Metadata } from 'next'
 import { Rubik } from 'next/font/google'
 import localFont from 'next/font/local'
 import '@/styles/globals.css'
-import NavBar from '@/components/nav'
+import NavBar from '@/layouts/nav'
+import SessionProvider from './(auth)/login/components/sessionProvider'
 
 const pretendard = localFont({
   src: [
@@ -34,8 +35,10 @@ export default function RootLayout({
   return (
     <html lang='ko' className={`${pretendard.className} ${rubik.variable}`}>
       <body className='flex'>
-        <NavBar />
-        {children}
+        <SessionProvider>
+          <NavBar />
+          {children}
+        </SessionProvider>
       </body>
     </html>
   )
