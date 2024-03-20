@@ -13,14 +13,24 @@ import { Input } from './input'
 import { Textarea } from './textarea'
 
 function AtvtSection() {
+  const [summary, setSummary] = useState('')
+  const [contents, setContents] = useState('')
   const [category, setCategory] = useState(['카테고리', '카테고리'])
+
+  const handleSaveAtvt = () => {
+    setCategory(() => ['카테고리', '카테고리'])
+    setSummary('')
+    setContents('')
+  }
 
   return (
     <Card className='px-2 py-2 space-y-1 '>
       <div className='flex items-center gap-2'>
         <Input
+          value={summary}
+          onChange={(e) => setSummary(e.target.value)}
           className='border-none shadow-none'
-          placeholder='활동 이름을 입력해 주세요.'
+          placeholder='활동내용을 간단히 정리해 작성해 주세요.'
         />
         <div>
           <Select
@@ -50,12 +60,16 @@ function AtvtSection() {
         </div>
       </div>
       <Textarea
+        value={contents}
+        onChange={(e) => setContents(e.target.value)}
         placeholder='내용을 입력해 주세요.'
         className='border-none shadow-none resize-none min-h-[20vh] max-h-[40px]'
       />
       <hr />
       <div className='text-right'>
-        <Button size='sm'>저장</Button>
+        <Button onClick={handleSaveAtvt} size='sm'>
+          저장
+        </Button>
       </div>
     </Card>
   )
