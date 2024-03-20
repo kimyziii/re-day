@@ -3,7 +3,7 @@ import { Rubik } from 'next/font/google'
 import localFont from 'next/font/local'
 import '@/styles/globals.css'
 import NavBar from '@/layouts/nav'
-import SessionProvider from './(auth)/login/components/sessionProvider'
+import SessionProvider from './(shared)/components/sessionProvider'
 
 const pretendard = localFont({
   src: [

@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
+import { User } from '@/app/models/user'
 
 const handler = NextAuth({
   providers: [
@@ -14,7 +15,7 @@ const handler = NextAuth({
     }),
   ],
   callbacks: {
-    async jwt({ token, session }) {
+    async jwt({ token }) {
       const reqBody = JSON.stringify({ email: token.email })
       const res = await fetch(`${process.env.NEXTAUTH_URL}/api/users`, {
         method: 'POST',
@@ -23,19 +24,26 @@ const handler = NextAuth({
 
       const response = await res.json()
 
-      let newTokenObj = {
-        ...token,
-        type: response.result === 'new user' ? 'n' : 'e',
+      let newTokenObj = { ...token }
+      if (response.result === 'new user') {
+        newTokenObj.type = 'n'
+      } else if (response.result === 'existing user') {
+        newTokenObj.type = 'e'
+        newTokenObj.userData = response.userData
       }
 
       return newTokenObj
     },
-    async session({ session, token }) {
+    session({ session, token }) {
+      if (!token.userData) {
+        token.userData = session.user
+      }
+
       return {
         ...session,
         user: {
-          ...session.user,
           type: token.type,
+          ...(token.userData as User),
         },
       }
     },

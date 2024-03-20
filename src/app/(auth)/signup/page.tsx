@@ -11,7 +11,7 @@ import { ChangeEvent, MouseEvent, useState } from 'react'
 
 const SignupPage = () => {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { data: session, status, update } = useSession()
   const user = session?.user as User
 
   const [nickname, setNickname] = useState<string>(user?.nickname || '')
@@ -39,8 +39,10 @@ const SignupPage = () => {
 
     const response = await res.json()
 
-    if (response.status === 201) router.push('/')
-    else {
+    if (response.status === 201) {
+      update({ ...session, user: response.userData })
+      router.push('/')
+    } else {
       console.error('error is ', response.message)
     }
   }

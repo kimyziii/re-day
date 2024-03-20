@@ -8,7 +8,6 @@ type LoginPageProps = {
 
 async function getServerSideProps() {
   const providers = await getProviders()
-  console.log(providers)
   await connectMongo()
   return { providers }
 }

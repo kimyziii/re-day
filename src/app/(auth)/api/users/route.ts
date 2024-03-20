@@ -15,7 +15,10 @@ export async function POST(req: NextRequest) {
         { _id: existedUser._id },
         { ...existedUser, updatedAt: new Date(0) },
       )
-      return NextResponse.json({ result: 'existing user' })
+      return NextResponse.json({
+        result: 'existing user',
+        userData: existedUser,
+      })
     }
   } catch (error) {
     console.log(error)
