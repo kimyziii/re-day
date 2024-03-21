@@ -1,10 +1,12 @@
 import mongoose from 'mongoose'
 
 const MONGO_URI = process.env.MONGO_URI
+
 const cached: {
   connection?: typeof mongoose
   promise?: Promise<typeof mongoose>
 } = {}
+
 async function connectMongo() {
   if (!MONGO_URI) {
     throw new Error(
@@ -16,6 +18,7 @@ async function connectMongo() {
   }
   if (!cached.promise) {
     const opts = {
+      dbName: 're-day',
       bufferCommands: false,
     }
     cached.promise = mongoose.connect(MONGO_URI, opts)
@@ -28,4 +31,5 @@ async function connectMongo() {
   }
   return cached.connection
 }
+
 export default connectMongo
