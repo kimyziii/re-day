@@ -1,5 +1,5 @@
 import { ClientSafeProvider, getProviders } from 'next-auth/react'
-import Login from '@/app/(shared)/components/login'
+import Login from '@/app/(auth)/login/components/login'
 import connectMongo from '@/app/(shared)/util/mongoose-connect'
 
 type LoginPageProps = {

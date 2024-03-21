@@ -4,8 +4,8 @@ import { ClientSafeProvider, signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useEffect } from 'react'
-import { Button } from './button'
-import { Card } from './card'
+import { Button } from '../../../(shared)/components/button'
+import { Card } from '../../../(shared)/components/card'
 
 type LoginProps = {
   providers: Record<string, ClientSafeProvider> | null
@@ -56,6 +56,7 @@ const Login = ({ providers }: LoginProps) => {
           )}
         </Card>
       </div>
+      <div className='mt-2'>계정이 없다면 자동으로 회원가입이 진행됩니다.</div>
     </div>
   )
 }
