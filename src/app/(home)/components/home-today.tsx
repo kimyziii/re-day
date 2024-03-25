@@ -52,7 +52,7 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
         />
       </CardHeader>
       <CardContent className='space-y-2'>
-        <AtvtSection />
+        <AtvtSection currentDate={currentDate} />
         <Button variant='outline' className='w-full h-[40px] '>
           <PiPlusCircleThin
             color='black'

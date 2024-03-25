@@ -1,17 +1,35 @@
-'use client'
-import HomeToday from '@/app/(home)/components/home-today'
-import HomeTomorrow from '@/app/(home)/components/home-tomorrow'
-import React from 'react'
+import {
+  HydrationBoundary,
+  QueryClient,
+  dehydrate,
+} from '@tanstack/react-query'
+import { getServerSession } from 'next-auth'
+import { GET } from '../(auth)/api/auth/[...nextauth]/route'
+import connectMongo from '../(shared)/util/mongoose-connect'
+import User from '../models/user'
+import HomeWrapper from './components/home-wrapper'
 
-const HomePage: React.FC = () => {
+const HomePage = async () => {
+  // const queryClient = new QueryClient()
+
   return (
-    <div className='w-full h-[80vh] bg-background flex flex-row justify-center mt-[10vh]'>
-      <div className='w-[90%] grid grid-cols-3 place-items-center gap-4'>
-        <HomeToday />
-        <HomeTomorrow />
-      </div>
-    </div>
+    // <HydrationBoundary state={dehydrate(queryClient)}>
+    <HomeWrapper />
+    // </HydrationBoundary>
   )
 }
 
 export default HomePage
+
+// const session = (await getServerSession(GET)) as { user: User }
+// const userEmail = session.user.email
+
+// await queryClient.prefetchQuery({
+//   queryKey: ['categoryItem', userEmail],
+//   queryFn: async () => {
+//     await fetch('/api/categoryItems', {
+//       method: 'POST',
+//       body: JSON.stringify({ userEmail }),
+//     })
+//   },
+// })

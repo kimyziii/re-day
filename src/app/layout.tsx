@@ -4,6 +4,7 @@ import localFont from 'next/font/local'
 import '@/styles/globals.css'
 import NavBar from '@/layouts/nav'
 import SessionProvider from './(shared)/components/sessionProvider'
+import QueryProviders from './(shared)/components/queryClientProvider'
 
 const pretendard = localFont({
   src: [
@@ -35,10 +36,12 @@ export default function RootLayout({
   return (
     <html lang='ko' className={`${pretendard.className} ${rubik.variable}`}>
       <body className='flex'>
-        <SessionProvider>
-          <NavBar />
-          {children}
-        </SessionProvider>
+        <QueryProviders>
+          <SessionProvider>
+            <NavBar />
+            {children}
+          </SessionProvider>
+        </QueryProviders>
       </body>
     </html>
   )
