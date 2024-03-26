@@ -1,3 +1,7 @@
+'use client'
+import { getCategoryItem } from '@/app/(home)/service/category'
+import { IUser } from '@/app/models/user'
+import { ICategoryItem } from '@/app/models/categoryItem'
 import {
   Select,
   SelectContent,
@@ -5,59 +9,97 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@radix-ui/react-select'
-import React, { useState } from 'react'
-import { CATEGORIES } from '../util/acvtCategory'
+import { useQuery } from '@tanstack/react-query'
+import { useSession } from 'next-auth/react'
+import React, { useEffect, useState } from 'react'
 import { Button } from './button'
 import { Card } from './card'
 import { Input } from './input'
 import { Textarea } from './textarea'
 
-function AtvtSection() {
+const initialCategory = {
+  value: '카테고리',
+  label: '카테고리',
+}
+
+function AtvtSection({ currentDate }: { currentDate: Date }) {
+  const [userId, setUserId] = useState('')
+
   const [summary, setSummary] = useState('')
   const [contents, setContents] = useState('')
-  const [category, setCategory] = useState(['카테고리', '카테고리'])
+  const [category, setCategory] = useState(initialCategory)
 
-  const handleSaveAtvt = () => {
-    setCategory(() => ['카테고리', '카테고리'])
+  const session = useSession()
+
+  const { data: categories, isLoading } = useQuery<ICategoryItem[], boolean>({
+    queryKey: ['categoryItem'],
+    queryFn: () => getCategoryItem(userId),
+    enabled: userId !== '',
+  })
+
+  useEffect(() => {
+    if (session && session.data) {
+      const userId = (session.data.user as IUser)._id as string
+      setUserId(userId)
+    }
+  }, [session])
+
+  const handleSaveActivity = () => {
+    handleSetInitialData()
+  }
+
+  const handleSetInitialData = () => {
+    setCategory(() => initialCategory)
     setSummary('')
     setContents('')
   }
 
+  if (isLoading) return <>isLoading..</>
+
   return (
     <Card className='px-2 py-2 space-y-1 '>
       <div className='flex items-center gap-2'>
-        <Input
-          value={summary}
-          onChange={(e) => setSummary(e.target.value)}
-          className='border-none shadow-none'
-          placeholder='활동내용을 간단히 정리해 작성해 주세요.'
-        />
-        <div>
-          <Select
-            value={category[1]}
-            onValueChange={(value) => {
-              setCategory(() => [value, CATEGORIES[value]])
-            }}
-          >
-            <SelectTrigger className='w-[100px] py-1 rounded-lg text-sm bg-accent text-black focus:outline-none'>
-              <SelectValue aria-label={category[0]}>{category[1]}</SelectValue>
-            </SelectTrigger>
-            <SelectContent className='flex items-center w-[100px] rounded-lg overflow-hidden'>
-              {Object.entries(CATEGORIES).map((category) => {
-                return (
-                  <SelectItem
-                    key={category[0]}
-                    className='w-[100px] text-center bg-slate-100 hover:bg-primary hover:text-white py-1 focus:outline-none'
-                    value={category[0]}
-                    data-value={category[0]}
-                  >
-                    {category[1]}
-                  </SelectItem>
-                )
-              })}
-            </SelectContent>
-          </Select>
-        </div>
+        <>
+          <Input
+            value={summary}
+            onChange={(e) => setSummary(e.target.value)}
+            className='border-none shadow-none'
+            placeholder='활동내용을 간단히 정리해 작성해 주세요.'
+          />
+          {categories && (
+            <div>
+              <Select
+                value={category.label}
+                onValueChange={(value) => {
+                  const category = categories.filter(
+                    (category) => category.value === value,
+                  )[0]
+                  setCategory(() => category)
+                }}
+              >
+                <SelectTrigger className='w-[100px] py-1 rounded-lg text-sm bg-accent text-black focus:outline-none'>
+                  <SelectValue aria-label={category.value}>
+                    {category.label}
+                  </SelectValue>
+                </SelectTrigger>
+                <SelectContent className='flex items-center w-[100px] rounded-lg overflow-hidden'>
+                  {categories.map((category) => {
+                    return (
+                      <SelectItem
+                        key={category.value}
+                        className='w-[100px] text-center bg-slate-100 hover:bg-primary hover:text-white py-1 focus:outline-none'
+                        value={category.value}
+                        data-value={category.value}
+                      >
+                        {category.label}
+                      </SelectItem>
+                    )
+                  })}
+                </SelectContent>
+              </Select>
+            </div>
+          )}
+        </>
       </div>
       <Textarea
         value={contents}
@@ -67,7 +109,12 @@ function AtvtSection() {
       />
       <hr />
       <div className='text-right'>
-        <Button onClick={handleSaveAtvt} size='sm'>
+        <Button
+          onClick={() => {
+            handleSaveActivity()
+          }}
+          size='sm'
+        >
           저장
         </Button>
       </div>

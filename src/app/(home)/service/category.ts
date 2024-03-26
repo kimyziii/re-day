@@ -5,7 +5,7 @@ export const getCategoryItem = async (userId: string) => {
     const getCategoryItems = await axios.get(
       `/api/categoryItem?userId=${userId}`,
     )
-    return getCategoryItems
+    return getCategoryItems.data.data
   } catch (error) {
     return error
   }
