@@ -8,19 +8,21 @@ import React, { useEffect, useState } from 'react'
 
 const HomeWrapper: React.FC = () => {
   const router = useRouter()
-  const { data: session, status } = useSession()
+  const { data: session } = useSession()
 
   const [userId, setUserId] = useState<string>('')
   const [currentDate, setCurrentDate] = useState<Date>(new Date())
 
   useEffect(() => {
-    if (status !== 'authenticated') {
-      router.push('/login')
-    } else if (session.user) {
+    if (session && session.user) {
       const userId = (session.user as User)._id as string
       setUserId(userId)
+    } else if (session === null) {
+      router.push('/login')
     }
   }, [session])
+
+  if (!session) return <>isLoading...</>
 
   return (
     <div className='w-full h-[80vh] bg-background flex flex-row justify-center mt-[10vh]'>
