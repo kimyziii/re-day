@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
-import { User } from '@/app/models/user'
+import { IUser } from '@/app/models/user'
 
 const handler = NextAuth({
   providers: [
@@ -34,7 +34,7 @@ const handler = NextAuth({
 
       return newTokenObj
     },
-    session({ session, token }) {
+    async session({ session, token }) {
       if (!token.userData) {
         token.userData = session.user
       }
@@ -43,7 +43,7 @@ const handler = NextAuth({
         ...session,
         user: {
           type: token.type,
-          ...(token.userData as User),
+          ...(token.userData as IUser),
         },
       }
     },

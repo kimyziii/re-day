@@ -1,5 +1,5 @@
 'use client'
-import { User } from '@/app/models/user'
+import { IUser } from '@/app/models/user'
 import { ClientSafeProvider, signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'
@@ -23,7 +23,7 @@ const Login = ({ providers }: LoginProps) => {
 
   useEffect(() => {
     if (session.status === 'authenticated') {
-      if ((session.data?.user as User).type === 'n') {
+      if ((session.data?.user as IUser).type === 'n') {
         router.push('/signup')
       } else {
         router.push('/')
