@@ -7,6 +7,6 @@ export const getCategoryItem = async (userId: string) => {
     )
     return getCategoryItems
   } catch (error) {
-    console.log(error)
+    return error
   }
 }
