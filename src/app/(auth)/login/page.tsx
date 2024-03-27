@@ -1,6 +1,5 @@
 import { ClientSafeProvider, getProviders } from 'next-auth/react'
 import Login from '@/app/(auth)/login/components/login'
-import connectMongo from '@/app/(shared)/util/mongoose-connect'
 
 type LoginPageProps = {
   providers: Record<string, ClientSafeProvider> | null
@@ -8,7 +7,6 @@ type LoginPageProps = {
 
 async function getServerSideProps() {
   const providers = await getProviders()
-  await connectMongo()
   return { providers }
 }
 
