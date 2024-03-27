@@ -24,3 +24,16 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ error })
   }
 }
+
+export async function DELETE(req: NextRequest) {
+  await connectMongo()
+  const atvtId = req.nextUrl.searchParams.get('atvtId')
+  console.log(`atvtId: ${atvtId}`)
+
+  try {
+    const response = await Activity.findByIdAndDelete(atvtId)
+    console.log(response)
+  } catch (error) {
+    return NextResponse.json({ error })
+  }
+}

@@ -11,10 +11,12 @@ import {
   IoMdArrowDropleftCircle,
   IoMdArrowDroprightCircle,
 } from 'react-icons/io'
-import { useQuery } from '@tanstack/react-query'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getActivities } from '../service/activities'
 import { formatDate } from '@/app/(shared)/util/formatDate'
 import { IoCloseOutline } from 'react-icons/io5'
+import { deleteAtvt } from '../service/activity'
+import Alert from '@/app/(shared)/components/alertDialog'
 
 interface HomeTodayProps {
   currentDate: Date
@@ -23,6 +25,7 @@ interface HomeTodayProps {
 }
 
 const HomeToday = ({ currentDate, setCurrentDate, userId }: HomeTodayProps) => {
+  const queryClient = useQueryClient()
   const dailyDate = formatDate(currentDate, 'yyyyMMdd') as string
 
   const { data: activities } = useQuery<any[], boolean>({
@@ -30,6 +33,19 @@ const HomeToday = ({ currentDate, setCurrentDate, userId }: HomeTodayProps) => {
     queryFn: () => getActivities({ userId, dailyDate }),
     enabled: userId !== '' && dailyDate !== '',
   })
+
+  const { mutate } = useMutation({
+    mutationFn: deleteAtvt,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['activities', userId, dailyDate],
+      })
+    },
+  })
+
+  const handleDeleteActivity = (atvtId: string) => {
+    mutate(atvtId)
+  }
 
   return (
     <Card className='w-full h-full col-span-2 overflow-y-auto text-center'>
@@ -79,9 +95,13 @@ const HomeToday = ({ currentDate, setCurrentDate, userId }: HomeTodayProps) => {
                       >
                         <div className='text-sm border-b pb-1 flex justify-between items-center'>
                           <span className='font-semibold'>{atvt.summary}</span>
-                          <div className='cursor-pointer' onClick={() => {}}>
+                          <Alert
+                            title='삭제하시겠습니까?'
+                            description='한 번 활동을 삭제하면 되돌릴 수 없습니다. 정말로 삭제하시겠습니까?'
+                            confirmFunc={() => handleDeleteActivity(atvt._id)}
+                          >
                             <IoCloseOutline size={16} />
-                          </div>
+                          </Alert>
                         </div>
                         <div className='text-sm font-light whitespace-pre-line text-justify'>
                           {atvt.contents}
