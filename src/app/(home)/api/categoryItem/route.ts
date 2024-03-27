@@ -9,7 +9,7 @@ export const GET = async (request: NextRequest) => {
     await connectMongo()
 
     const response = await CategoryItem.find({
-      userId: { $in: [userId, 'public'] },
+      $or: [{ userId }, { type: 'public' }],
     })
     return NextResponse.json({ status: 'success', data: response })
   } catch (error) {

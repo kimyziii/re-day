@@ -5,6 +5,7 @@ export interface ICategoryItem {
   label: string
   value: string
   userId?: Types.ObjectId
+  type?: string
 }
 
 const CategoryItemSchema = new mongoose.Schema<ICategoryItem>({
@@ -15,6 +16,7 @@ const CategoryItemSchema = new mongoose.Schema<ICategoryItem>({
     type: Schema.Types.ObjectId,
     ref: 'User',
   },
+  type: String,
 })
 
 const CategoryItem =
