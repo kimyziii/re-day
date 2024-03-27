@@ -10,7 +10,7 @@ const pretendard = localFont({
   src: [
     {
       path: './../../public/PretendardVariable.woff2',
-      weight: '200',
+      weight: '100 900',
       style: 'normal',
     },
   ],
