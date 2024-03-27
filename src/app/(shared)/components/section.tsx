@@ -1,6 +1,5 @@
 'use client'
 import { getCategoryItem } from '@/app/(home)/service/category'
-import { IUser } from '@/app/models/user'
 import { ICategoryItem } from '@/app/models/categoryItem'
 import {
   Select,
@@ -9,42 +8,62 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@radix-ui/react-select'
-import { useQuery } from '@tanstack/react-query'
-import { useSession } from 'next-auth/react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import React, { useEffect, useState } from 'react'
 import { Button } from './button'
 import { Card } from './card'
 import { Input } from './input'
 import { Textarea } from './textarea'
+import { addAtvt } from '@/app/(home)/service/activity'
+import { formatDate } from '../util/formatDate'
+import { Types } from 'mongoose'
 
 const initialCategory = {
+  _id: new Types.ObjectId(),
   value: '카테고리',
   label: '카테고리',
+  userId: new Types.ObjectId(),
 }
 
-function AtvtSection({ currentDate }: { currentDate: Date }) {
-  const [userId, setUserId] = useState('')
-
+function AtvtSection({
+  currentDate,
+  userId,
+}: {
+  currentDate: Date
+  userId: string
+}) {
   const [summary, setSummary] = useState('')
   const [contents, setContents] = useState('')
-  const [category, setCategory] = useState(initialCategory)
+  const [category, setCategory] = useState<ICategoryItem>(initialCategory)
 
-  const session = useSession()
+  const queryClient = useQueryClient()
+  const dailyDate = formatDate(currentDate, 'yyyyMMdd') as string
 
   const { data: categories, isLoading } = useQuery<ICategoryItem[], boolean>({
-    queryKey: ['categoryItem'],
+    queryKey: ['categoryItem', userId],
     queryFn: () => getCategoryItem(userId),
     enabled: userId !== '',
   })
 
-  useEffect(() => {
-    if (session && session.data) {
-      const userId = (session.data.user as IUser)._id as string
-      setUserId(userId)
-    }
-  }, [session])
+  const { mutate } = useMutation({
+    mutationFn: addAtvt,
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['activities', userId, dailyDate],
+      })
+    },
+  })
 
   const handleSaveActivity = () => {
+    const newObj = {
+      categoryId: new Types.ObjectId(category._id),
+      summary,
+      contents,
+      dailyDate,
+      createdById: new Types.ObjectId(userId),
+    }
+    mutate(newObj)
+
     handleSetInitialData()
   }
 
@@ -72,7 +91,9 @@ function AtvtSection({ currentDate }: { currentDate: Date }) {
                 value={category.label}
                 onValueChange={(value) => {
                   const category = categories.filter(
-                    (category) => category.value === value,
+                    (category: ICategoryItem) => {
+                      return category._id?.toString() === value
+                    },
                   )[0]
                   setCategory(() => category)
                 }}
@@ -88,7 +109,7 @@ function AtvtSection({ currentDate }: { currentDate: Date }) {
                       <SelectItem
                         key={category.value}
                         className='w-[100px] text-center bg-slate-100 hover:bg-primary hover:text-white py-1 focus:outline-none'
-                        value={category.value}
+                        value={category._id.toString()}
                         data-value={category.value}
                       >
                         {category.label}
@@ -105,7 +126,7 @@ function AtvtSection({ currentDate }: { currentDate: Date }) {
         value={contents}
         onChange={(e) => setContents(e.target.value)}
         placeholder='내용을 입력해 주세요.'
-        className='border-none shadow-none resize-none min-h-[20vh] max-h-[40px]'
+        className='border-none shadow-none resize-none min-h-[15vh] max-h-[30px] rounded-md'
       />
       <hr />
       <div className='text-right'>

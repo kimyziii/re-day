@@ -57,3 +57,7 @@
     @apply bg-background text-foreground;
   }
 }
+
+.card-triangle-arrow {
+  @apply absolute top-0 left-[-10px] border-b-[17px] w-0 h-0 border-b-muted border-l-[10px] border-l-transparent border-r-[10px] border-r-slate-200 mt-2 border-r-transparent -rotate-[90deg];
+}

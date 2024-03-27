@@ -1,6 +1,6 @@
 import mongoose from 'mongoose'
 
-const MONGO_URI = process.env.MONGO_URI
+const MONGO_URI = process.env.MONGO_URI_LOWER_VER
 
 const cached: {
   connection?: typeof mongoose

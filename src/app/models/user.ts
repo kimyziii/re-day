@@ -1,7 +1,7 @@
-import { InferSchemaType, model, models, Schema } from 'mongoose'
+import { model, models, Schema, Types } from 'mongoose'
 
 export interface IUser {
-  _id?: string
+  _id?: Types.ObjectId
   name: string
   nickname: string
   email: string
@@ -11,7 +11,7 @@ export interface IUser {
 
 const UserSchema = new Schema<IUser>(
   {
-    _id: String,
+    _id: Schema.Types.ObjectId,
     name: String,
     nickname: String,
     email: {
@@ -26,6 +26,6 @@ const UserSchema = new Schema<IUser>(
   },
 )
 
-const User = models.User || model('User', UserSchema)
+const User = models?.User || model('User', UserSchema)
 
 export default User
