@@ -93,7 +93,7 @@ const HomeToday = ({ currentDate, setCurrentDate, userId }: HomeTodayProps) => {
                         key={atvt._id}
                         className='text-left px-2 py-[6px] space-y-[6px]'
                       >
-                        <div className='text-sm border-b pb-1 flex justify-between items-center'>
+                        <div className='text-sm border-b pb-1 flex justify-between items-center px-2'>
                           <span className='font-semibold'>{atvt.summary}</span>
                           <Alert
                             title='삭제하시겠습니까?'
@@ -103,7 +103,7 @@ const HomeToday = ({ currentDate, setCurrentDate, userId }: HomeTodayProps) => {
                             <IoCloseOutline size={16} />
                           </Alert>
                         </div>
-                        <div className='text-sm font-light whitespace-pre-line text-justify'>
+                        <div className='text-sm font-light whitespace-pre-line text-justify px-2'>
                           {atvt.contents}
                         </div>
                       </CardContent>
