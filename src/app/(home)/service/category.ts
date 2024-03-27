@@ -5,7 +5,11 @@ export const getCategoryItem = async (userId: string) => {
     const getCategoryItems = await axios.get(
       `/api/categoryItem?userId=${userId}`,
     )
-    return getCategoryItems.data.data
+    if (getCategoryItems) {
+      return getCategoryItems.data.data
+    } else {
+      return null
+    }
   } catch (error) {
     return error
   }
