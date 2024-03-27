@@ -17,16 +17,20 @@ import { formatDate } from '@/app/(shared)/util/formatDate'
 import { IoCloseOutline } from 'react-icons/io5'
 import { deleteAtvt } from '../service/activity'
 import Alert from '@/app/(shared)/components/alertDialog'
+import { useContext } from 'react'
+import UserContext from '@/app/(shared)/context/userContext'
 
 interface HomeTodayProps {
   currentDate: Date
   setCurrentDate: (prevDate: Date) => void
-  userId: string
 }
 
-const HomeToday = ({ currentDate, setCurrentDate, userId }: HomeTodayProps) => {
+const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
   const queryClient = useQueryClient()
   const dailyDate = formatDate(currentDate, 'yyyyMMdd') as string
+
+  const { user } = useContext(UserContext)
+  const userId = user.id
 
   const { data: activities } = useQuery<any[], boolean>({
     queryKey: ['activities', userId, dailyDate],
