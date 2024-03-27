@@ -1,12 +1,13 @@
+import connectMongo from '@/app/(shared)/util/mongoose-connect'
 import User from '@/app/models/user'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  try {
-    const deserializedReq = await req.json()
-    const email = deserializedReq.email
+  await connectMongo()
 
-    // find user with login email
+  try {
+    const { email } = await req.json()
+
     const existedUser = await User.findOne({ email: email }).exec()
     if (!existedUser) {
       return NextResponse.json({ result: 'new user' })
