@@ -2,7 +2,7 @@
 import { Button } from '@/app/(shared)/components/button'
 import { Card } from '@/app/(shared)/components/card'
 import { Input } from '@/app/(shared)/components/input'
-import { User } from '@/app/models/user'
+import { IUser } from '@/app/models/user'
 import { Label } from '@radix-ui/react-label'
 import { signOut, useSession } from 'next-auth/react'
 import Image from 'next/image'
@@ -12,7 +12,7 @@ import { ChangeEvent, MouseEvent, useState } from 'react'
 const SignupPage = () => {
   const router = useRouter()
   const { data: session, status, update } = useSession()
-  const user = session?.user as User
+  const user = session?.user as IUser
 
   const [nickname, setNickname] = useState<string>(user?.nickname || '')
 
