@@ -31,6 +31,8 @@ import {
 } from '@/app/(home)/service/category'
 import { Input } from '@/app/(shared)/components/input'
 import { Button } from '@/app/(shared)/components/button'
+import { HoverCardContent, HoverCardTrigger } from '@radix-ui/react-hover-card'
+import { HoverCard } from '@/components/ui/hover-card'
 import { Types } from 'mongoose'
 
 const initialData = {
@@ -128,7 +130,16 @@ const CategorySettings = () => {
             <TableHead>라벨</TableHead>
             <TableHead className='w-full flex flex-row items-center gap-1'>
               <span className='font-medium'>값</span>
+              <HoverCard openDelay={1}>
+                <HoverCardTrigger>
                   <FaCircleQuestion />
+                </HoverCardTrigger>
+                <HoverCardContent side='bottom' sideOffset={8} align='center'>
+                  <div className='bg-primary text-white rounded-md border border-primary px-3 py-2'>
+                    중복되지 않도록 입력해주세요.
+                  </div>
+                </HoverCardContent>
+              </HoverCard>
             </TableHead>
             <TableHead className='min-w-12 w-12 max-w-12 text-center'>
               수정
