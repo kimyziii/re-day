@@ -1,3 +1,4 @@
+import { ICategoryItem } from '@/app/models/categoryItem'
 import axios from 'axios'
 
 export const getCategoryItem = async (userId: string) => {
@@ -12,5 +13,18 @@ export const getCategoryItem = async (userId: string) => {
     }
   } catch (error) {
     return error
+  }
+}
+
+export const createCategoryItem = async (data: Omit<ICategoryItem, '_id'>) => {
+  try {
+    const newCategory = await axios.post(`/api/categoryItem`, data)
+    if (newCategory) {
+      return { data: newCategory }
+    } else {
+      return null
+    }
+  } catch (error: any) {
+    throw error
   }
 }
