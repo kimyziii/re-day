@@ -35,7 +35,7 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
   const { data: activities } = useQuery<any[], boolean>({
     queryKey: ['activities', userId, dailyDate],
     queryFn: () => getActivities({ userId, dailyDate }),
-    enabled: userId !== '' && dailyDate !== '',
+    enabled: !!userId && !!dailyDate,
   })
 
   const { mutate } = useMutation({
@@ -57,7 +57,7 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
         <IoMdArrowDropleftCircle
           className='cursor-pointer'
           onClick={() => {
-            const prevDate = new Date()
+            const prevDate = new Date(currentDate)
             prevDate.setDate(currentDate.getDate() - 1)
             setCurrentDate(prevDate)
           }}
@@ -76,7 +76,7 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
         <IoMdArrowDroprightCircle
           className='cursor-pointer'
           onClick={() => {
-            const nextDate = new Date()
+            const nextDate = new Date(currentDate)
             nextDate.setDate(currentDate.getDate() + 1)
             setCurrentDate(nextDate)
           }}
@@ -84,12 +84,14 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
       </CardHeader>
       <CardContent className='space-y-2'>
         <AtvtSection currentDate={currentDate} userId={userId} />
-        {activities && (
+        {!!activities && (
           <div className='space-y-2'>
             {activities.map((atvt) => {
               return (
                 <div key={atvt._id} className='flex w-full gap-4 pl-2'>
-                  <div className='w-fit mt-[5px]'>{atvt.categoryId.label}</div>
+                  <div className='w-fit mt-[5px]'>
+                    {atvt.categoryId?.label || '💬'}
+                  </div>
                   <div className='w-full relative'>
                     <div className='card-triangle-arrow' />
                     <Card className='w-full mx-auto border-none bg-muted'>
