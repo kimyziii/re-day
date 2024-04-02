@@ -1,9 +1,42 @@
 import '@testing-library/jest-dom'
-import { render } from '@testing-library/react'
+import { render, renderHook, waitFor } from '@testing-library/react'
 import userEvent from '@testing-library/user-event'
 import { describe } from 'node:test'
 import { CATEGORIES } from '../../util/acvtCategory'
 import AtvtSection from '../section'
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from '@tanstack/react-query'
+import React from 'react'
+
+function useCustomHook() {
+  return useQuery({
+    queryKey: ['categoryItem'],
+    queryFn: () => {
+      return [
+        {
+          _id: '66001e98d44dc9956110d48a',
+          label: '💻',
+          value: '공부',
+          userId: 'public',
+        },
+        {
+          _id: '6602463b6e2d7d198cba1c0f',
+          label: '💪',
+          value: '운동',
+          userId: 'public',
+        },
+      ]
+    },
+  })
+}
+
+const queryClient = new QueryClient()
+const wrapper = ({ children }: React.PropsWithChildren) => (
+  <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+)
 
 jest.mock('next-auth/react', () => {
   const originalModule = jest.requireActual('next-auth/react')
@@ -20,12 +53,19 @@ jest.mock('next-auth/react', () => {
   }
 })
 
-describe(() => {
+describe(async () => {
   it('카테고리를 열고 선택하여 카테고리값을 설정하는 시나리오 테스트', async () => {
+    const { result: categories } = renderHook(() => useCustomHook(), {
+      wrapper,
+    })
+    console.log(categories)
+    await waitFor(() => categories.current.isSuccess)
+    expect(categories.current.data).toBeDefined()
+
     const user = userEvent.setup()
     window.HTMLElement.prototype.hasPointerCapture = jest.fn()
 
-    const screen = render(<AtvtSection currentDate={new Date()} />)
+    const screen = render(<AtvtSection currentDate={new Date()} />, { wrapper })
     await user.click(screen.getByRole('combobox'))
 
     const comboboxList = screen.getAllByRole('option')
@@ -40,7 +80,7 @@ describe(() => {
   it('활동 요약 입력값이 제대로 들어가는지 확인', async () => {
     const user = userEvent.setup()
 
-    const screen = render(<AtvtSection currentDate={new Date()} />)
+    const screen = render(<AtvtSection currentDate={new Date()} />, { wrapper })
     const input = screen.getByPlaceholderText(
       '활동내용을 간단히 정리해 작성해 주세요.',
     )
@@ -52,7 +92,7 @@ describe(() => {
   it('활동 요약 입력값이 제대로 들어가는지 확인', async () => {
     const user = userEvent.setup()
 
-    const screen = render(<AtvtSection currentDate={new Date()} />)
+    const screen = render(<AtvtSection currentDate={new Date()} />, { wrapper })
     const input = screen.getByPlaceholderText('내용을 입력해 주세요.')
     await user.type(input, '오늘 이런 걸 했어용.')
 
@@ -60,9 +100,16 @@ describe(() => {
   })
 
   it('저장 버튼 누르면 모든 입력값을 다 초기화하기', async () => {
+    const { result: categories } = renderHook(() => useCustomHook(), {
+      wrapper,
+    })
+    console.log(categories)
+    await waitFor(() => categories.current.isSuccess)
+    expect(categories.current.data).toBeDefined()
+
     const user = userEvent.setup()
 
-    const screen = render(<AtvtSection currentDate={new Date()} />)
+    const screen = render(<AtvtSection currentDate={new Date()} />, { wrapper })
 
     // 카테고리 선택
     await user.click(screen.getByRole('combobox'))

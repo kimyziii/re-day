@@ -37,6 +37,9 @@ export const POST = async (request: NextRequest) => {
     return NextResponse.json({ result: 'success', data: response })
   } catch (error) {
     if (error instanceof MongooseError) {
+      console.log(`error in mongoose error`)
+      console.log(error.name, error.message)
+      // return new NextResponse.error()
     }
   }
 }

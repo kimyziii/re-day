@@ -95,7 +95,7 @@ const HomeTomorrow = ({ currentDate }: { currentDate: Date }) => {
           </div>
         )}
         {!!todos && (
-          <div className='space-y-3'>
+          <div className='space-y-1'>
             {todos.map((todo: ITodo) => {
               return (
                 <div

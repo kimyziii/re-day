@@ -32,7 +32,7 @@ import {
 import { Input } from '@/app/(shared)/components/input'
 import { Button } from '@/app/(shared)/components/button'
 import { HoverCardContent, HoverCardTrigger } from '@radix-ui/react-hover-card'
-import { HoverCard } from '@/components/ui/hover-card'
+import { HoverCard } from '@/app/(shared)/components/hover-card'
 import { Types } from 'mongoose'
 
 const initialData = {

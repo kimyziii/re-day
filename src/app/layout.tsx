@@ -5,6 +5,7 @@ import '@/styles/globals.css'
 import NavBar from '@/layouts/nav'
 import SessionProvider from './(shared)/components/sessionProvider'
 import QueryProviders from './(shared)/components/queryClientProvider'
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import UserContextProvider from './(shared)/context/userContextProviders'
 
 const pretendard = localFont({
@@ -39,6 +40,7 @@ export default function RootLayout({
       <body className='flex'>
         <UserContextProvider>
           <QueryProviders>
+            <ReactQueryDevtools initialIsOpen={true} />
             <SessionProvider>
               <NavBar />
               {children}
