@@ -2,14 +2,19 @@
 import { getCategoryItem } from '@/app/(home)/service/category'
 import { ICategoryItem } from '@/app/models/categoryItem'
 import {
+  Arrow,
+  ScrollDownButton,
+  ScrollUpButton,
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
+  Viewport,
 } from '@radix-ui/react-select'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Button } from './button'
 import { Card } from './card'
 import { Input } from './input'
@@ -42,7 +47,7 @@ function AtvtSection({
   const { data: categories, isLoading } = useQuery<ICategoryItem[], boolean>({
     queryKey: ['categoryItem', userId],
     queryFn: () => getCategoryItem(userId),
-    enabled: userId !== '',
+    enabled: !!userId,
   })
 
   const { mutate } = useMutation({
@@ -103,19 +108,26 @@ function AtvtSection({
                     {category.label}
                   </SelectValue>
                 </SelectTrigger>
-                <SelectContent className='flex items-center w-[100px] rounded-lg overflow-hidden'>
-                  {categories.map((category) => {
-                    return (
-                      <SelectItem
-                        key={category.value}
-                        className='w-[100px] text-center bg-slate-100 hover:bg-primary hover:text-white py-1 focus:outline-none'
-                        value={category._id.toString()}
-                        data-value={category.value}
-                      >
-                        {category.label}
-                      </SelectItem>
-                    )
-                  })}
+                <SelectContent className='flex items-center w-[100px]'>
+                  <SelectGroup className='rounded-lg overflow-y-auto max-h-[120px]'>
+                    <ScrollUpButton />
+                    <Viewport>
+                      {categories.map((category) => {
+                        return (
+                          <SelectItem
+                            key={category.value}
+                            className='w-[100px] text-center bg-slate-100 hover:bg-primary hover:text-white py-1 focus:outline-none'
+                            value={category._id.toString()}
+                            data-value={category.value}
+                          >
+                            {category.label}
+                          </SelectItem>
+                        )
+                      })}
+                    </Viewport>
+                    <ScrollDownButton />
+                    <Arrow />
+                  </SelectGroup>
                 </SelectContent>
               </Select>
             </div>
