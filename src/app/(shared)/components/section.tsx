@@ -1,19 +1,7 @@
 'use client'
-import { getCategoryItem } from '@/app/(home)/service/category'
 import { ICategoryItem } from '@/app/models/categoryItem'
-import {
-  Arrow,
-  ScrollDownButton,
-  ScrollUpButton,
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-  Viewport,
-} from '@radix-ui/react-select'
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'
 import { Button } from './button'
 import { Card } from './card'
@@ -22,6 +10,7 @@ import { Textarea } from './textarea'
 import { addAtvt } from '@/app/(home)/service/activity'
 import { formatDate } from '../util/formatDate'
 import { Types } from 'mongoose'
+import Categories from './categories'
 
 const initialCategory = {
   _id: new Types.ObjectId(),
@@ -43,12 +32,6 @@ function AtvtSection({
 
   const queryClient = useQueryClient()
   const dailyDate = formatDate(currentDate, 'yyyyMMdd') as string
-
-  const { data: categories, isLoading } = useQuery<ICategoryItem[], boolean>({
-    queryKey: ['categoryItem', userId],
-    queryFn: () => getCategoryItem(userId),
-    enabled: !!userId,
-  })
 
   const { mutate } = useMutation({
     mutationFn: addAtvt,
@@ -78,8 +61,6 @@ function AtvtSection({
     setContents('')
   }
 
-  if (isLoading) return <>isLoading..</>
-
   return (
     <Card className='px-2 py-2 space-y-1 '>
       <div className='flex items-center gap-2'>
@@ -90,48 +71,11 @@ function AtvtSection({
             className='border-none shadow-none'
             placeholder='활동내용을 간단히 정리해 작성해 주세요.'
           />
-          {categories && (
-            <div>
-              <Select
-                value={category.label}
-                onValueChange={(value) => {
-                  const category = categories.filter(
-                    (category: ICategoryItem) => {
-                      return category._id?.toString() === value
-                    },
-                  )[0]
-                  setCategory(() => category)
-                }}
-              >
-                <SelectTrigger className='w-[100px] py-1 rounded-lg text-sm bg-accent text-black focus:outline-none'>
-                  <SelectValue aria-label={category.value}>
-                    {category.label}
-                  </SelectValue>
-                </SelectTrigger>
-                <SelectContent className='flex items-center w-[100px]'>
-                  <SelectGroup className='rounded-lg overflow-y-auto max-h-[120px]'>
-                    <ScrollUpButton />
-                    <Viewport>
-                      {categories.map((category) => {
-                        return (
-                          <SelectItem
-                            key={category.value}
-                            className='w-[100px] text-center bg-slate-100 hover:bg-primary hover:text-white py-1 focus:outline-none'
-                            value={category._id.toString()}
-                            data-value={category.value}
-                          >
-                            {category.label}
-                          </SelectItem>
-                        )
-                      })}
-                    </Viewport>
-                    <ScrollDownButton />
-                    <Arrow />
-                  </SelectGroup>
-                </SelectContent>
-              </Select>
-            </div>
-          )}
+          <Categories
+            userId={userId}
+            category={category}
+            setCategory={setCategory}
+          />
         </>
       </div>
       <Textarea
