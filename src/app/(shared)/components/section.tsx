@@ -12,7 +12,7 @@ import { formatDate } from '../util/formatDate'
 import { Types } from 'mongoose'
 import Categories from './categories'
 
-const initialCategory = {
+export const initialCategory = {
   _id: new Types.ObjectId(),
   value: '카테고리',
   label: '카테고리',

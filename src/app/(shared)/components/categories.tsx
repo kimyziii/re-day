@@ -21,9 +21,15 @@ type CategoriesProps = {
   userId: string
   category: ICategoryItem
   setCategory: Dispatch<SetStateAction<ICategoryItem>>
+  className?: string
 }
 
-const Categories = ({ userId, category, setCategory }: CategoriesProps) => {
+const Categories = ({
+  userId,
+  category,
+  setCategory,
+  className,
+}: CategoriesProps) => {
   const { data: categories, isLoading } = useQuery<ICategoryItem[], boolean>({
     queryKey: ['categoryItem', userId],
     queryFn: () => getCategoryItem(userId),
@@ -33,7 +39,7 @@ const Categories = ({ userId, category, setCategory }: CategoriesProps) => {
   if (isLoading) return <>isLoading..</>
 
   return (
-    <div>
+    <div className={className}>
       {categories && (
         <div>
           <Select
@@ -42,7 +48,7 @@ const Categories = ({ userId, category, setCategory }: CategoriesProps) => {
               const category = categories.filter((category: ICategoryItem) => {
                 return category._id?.toString() === value
               })[0]
-              setCategory(() => category)
+              if (setCategory) setCategory(() => category)
             }}
           >
             <SelectTrigger className='w-[100px] py-1 rounded-lg text-sm bg-accent text-black focus:outline-none'>

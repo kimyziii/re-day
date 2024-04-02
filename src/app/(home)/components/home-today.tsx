@@ -11,6 +11,7 @@ import {
   IoMdArrowDropleftCircle,
   IoMdArrowDroprightCircle,
 } from 'react-icons/io'
+
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getActivities } from '../service/activities'
 import { formatDate } from '@/app/(shared)/util/formatDate'
@@ -19,6 +20,7 @@ import { deleteAtvt } from '../service/activity'
 import Alert from '@/app/(shared)/components/alertDialog'
 import { useContext } from 'react'
 import UserContext from '@/app/(shared)/context/userContext'
+import HomeTodoDialog from './home-todo-dialog'
 
 interface HomeTodayProps {
   currentDate: Date
@@ -38,7 +40,7 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
     enabled: !!userId && !!dailyDate,
   })
 
-  const { mutate } = useMutation({
+  const { mutate: mutateDelete } = useMutation({
     mutationFn: deleteAtvt,
     onSuccess: () => {
       queryClient.invalidateQueries({
@@ -48,39 +50,50 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
   })
 
   const handleDeleteActivity = (atvtId: string) => {
-    mutate(atvtId)
+    mutateDelete(atvtId)
   }
 
   return (
     <Card className='w-full h-full col-span-2 overflow-y-auto text-center'>
       <CardHeader className='flex flex-row justify-evenly items-center'>
-        <IoMdArrowDropleftCircle
-          className='cursor-pointer'
-          onClick={() => {
-            const prevDate = new Date(currentDate)
-            prevDate.setDate(currentDate.getDate() - 1)
-            setCurrentDate(prevDate)
-          }}
-        />
-        <div>
-          <CardTitle className='font-rubik tracking-wide italic'>
-            {currentDate.toLocaleDateString('ko-KR', {
-              year: 'numeric',
-              month: '2-digit',
-              day: '2-digit',
-              weekday: 'short',
-            })}
-          </CardTitle>
-          <CardDescription>하루를 회고합니다.</CardDescription>
+        <div className='flex justify-start items-center px-2 py-1 bg-secondary rounded-md'>
+          <HomeTodoDialog dailyDate={dailyDate} />
         </div>
-        <IoMdArrowDroprightCircle
-          className='cursor-pointer'
-          onClick={() => {
-            const nextDate = new Date(currentDate)
-            nextDate.setDate(currentDate.getDate() + 1)
-            setCurrentDate(nextDate)
-          }}
-        />
+        <div className='w-[80%] flex items-center justify-evenly'>
+          <IoMdArrowDropleftCircle
+            className='cursor-pointer'
+            onClick={() => {
+              const prevDate = new Date(currentDate)
+              prevDate.setDate(currentDate.getDate() - 1)
+              setCurrentDate(prevDate)
+            }}
+          />
+          <div>
+            <CardTitle className='font-rubik tracking-wide italic'>
+              {currentDate.toLocaleDateString('ko-KR', {
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit',
+                weekday: 'short',
+              })}
+            </CardTitle>
+            <CardDescription>하루를 회고합니다.</CardDescription>
+          </div>
+          <IoMdArrowDroprightCircle
+            className='cursor-pointer'
+            onClick={() => {
+              const nextDate = new Date(currentDate)
+              nextDate.setDate(currentDate.getDate() + 1)
+              setCurrentDate(nextDate)
+            }}
+          />
+        </div>
+        <div
+          onClick={() => setCurrentDate(new Date())}
+          className='text-xs px-2 py-1 bg-secondary font-semibold rounded-md cursor-pointer'
+        >
+          TODAY
+        </div>
       </CardHeader>
       <CardContent className='space-y-2'>
         <AtvtSection currentDate={currentDate} userId={userId} />

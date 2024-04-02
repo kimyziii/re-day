@@ -1,6 +1,6 @@
 import HomeWrapper from './components/home-wrapper'
 
-const HomePage = async () => {
+const HomePage = () => {
   return <HomeWrapper />
 }
 
