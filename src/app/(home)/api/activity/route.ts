@@ -1,9 +1,9 @@
-import connectMongo from '@/app/(shared)/util/mongoose-connect'
+import connectMongo, { cached } from '@/app/(shared)/util/mongoose-connect'
 import Activity from '@/app/models/activity'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  await connectMongo()
+  if (!cached.connection) await connectMongo()
   try {
     const { categoryId, summary, contents, dailyDate, createdById } =
       await req.json()
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
 }
 
 export async function DELETE(req: NextRequest) {
-  await connectMongo()
+  if (!cached.connection) await connectMongo()
   const atvtId = req.nextUrl.searchParams.get('atvtId')
 
   try {

@@ -1,4 +1,4 @@
-import connectMongo from '@/app/(shared)/util/mongoose-connect'
+import connectMongo, { cached } from '@/app/(shared)/util/mongoose-connect'
 import CategoryItem from '@/app/models/categoryItem'
 import { MongooseError, Types } from 'mongoose'
 import { NextRequest, NextResponse } from 'next/server'
@@ -7,7 +7,7 @@ export const GET = async (request: NextRequest) => {
   const userId = request.nextUrl.searchParams.get('userId')
 
   try {
-    await connectMongo()
+    if (!cached.connection) await connectMongo()
 
     const response = await CategoryItem.find({
       $or: [{ userId }, { type: 'public' }],
@@ -20,7 +20,7 @@ export const GET = async (request: NextRequest) => {
 }
 
 export const POST = async (request: NextRequest) => {
-  await connectMongo()
+  if (!cached.connection) await connectMongo()
 
   try {
     const type = 'private'
