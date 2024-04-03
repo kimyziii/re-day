@@ -122,7 +122,7 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
                             <IoCloseOutline size={16} />
                           </Alert>
                         </div>
-                        <div className='text-sm font-light whitespace-pre-line text-justify px-2'>
+                        <div className='text-sm font-light whitespace-pre-line break-all text-justify px-2'>
                           {atvt.contents}
                         </div>
                       </CardContent>
