@@ -1,4 +1,5 @@
 import { model, models, Schema, Types } from 'mongoose'
+import User from './user'
 
 export interface ITodo {
   _id?: Types.ObjectId
@@ -15,7 +16,7 @@ const TodoSchema = new Schema<ITodo>(
     content: String,
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'user',
+      ref: User.modelName,
     },
     isSuccess: Boolean,
   },
@@ -24,6 +25,6 @@ const TodoSchema = new Schema<ITodo>(
   },
 )
 
-const Todo = models?.Todo || model('todo', TodoSchema)
+const Todo = models?.todo || model('todo', TodoSchema)
 
 export default Todo

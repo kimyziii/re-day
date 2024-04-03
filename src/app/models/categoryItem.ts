@@ -1,4 +1,5 @@
 import mongoose, { model, models, Schema, Types } from 'mongoose'
+import User from './user'
 
 export interface ICategoryItem {
   _id: Types.ObjectId
@@ -14,12 +15,12 @@ const CategoryItemSchema = new mongoose.Schema<ICategoryItem>({
   value: String,
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'user',
+    ref: User.modelName,
   },
   type: String,
 })
 
 const CategoryItem =
-  models?.CategoryItem || model('categoryitem', CategoryItemSchema)
+  models?.categoryitem || model('categoryitem', CategoryItemSchema)
 
 export default CategoryItem
