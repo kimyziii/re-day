@@ -1,5 +1,5 @@
 import connectMongo, { cached } from '@/app/(shared)/util/mongoose-connect'
-import User from '@/app/models/user'
+import User from '@/models/user'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {

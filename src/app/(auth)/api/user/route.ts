@@ -1,3 +1,4 @@
+import User from '@/models/user'
 import User from '@/app/models/user'
 import { NextRequest, NextResponse } from 'next/server'
 

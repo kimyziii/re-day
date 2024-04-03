@@ -1,4 +1,4 @@
-import { IActivity } from '@/app/models/activity'
+import { IActivity } from '@/models/activity'
 import axios from 'axios'
 
 export const addAtvt = async (data: IActivity) => {

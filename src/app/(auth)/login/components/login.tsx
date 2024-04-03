@@ -1,5 +1,5 @@
 'use client'
-import { IUser } from '@/app/models/user'
+import { IUser } from '@/models/user'
 import { ClientSafeProvider, signIn, useSession } from 'next-auth/react'
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'

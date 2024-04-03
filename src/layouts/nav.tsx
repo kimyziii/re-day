@@ -1,6 +1,6 @@
 'use client'
 import UserContext from '@/app/(shared)/context/userContext'
-import { IUser } from '@/app/models/user'
+import { IUser } from '@/models/user'
 import { useSession } from 'next-auth/react'
 import { usePathname, useRouter } from 'next/navigation'
 import { useContext, useEffect } from 'react'

@@ -1,5 +1,5 @@
 import connectMongo, { cached } from '@/app/(shared)/util/mongoose-connect'
-import CategoryItem from '@/app/models/categoryItem'
+import CategoryItem from '@/models/categoryItem'
 import { MongooseError, Types } from 'mongoose'
 import { NextRequest, NextResponse } from 'next/server'
 

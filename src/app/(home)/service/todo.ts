@@ -1,4 +1,4 @@
-import { ITodo } from '@/app/models/todo'
+import { ITodo } from '@/models/todo'
 import axios from 'axios'
 
 export const createTodo = async (data: ITodo) => {

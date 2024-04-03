@@ -1,5 +1,5 @@
 'use client'
-import { ICategoryItem } from '@/app/models/categoryItem'
+import { ICategoryItem } from '@/models/categoryItem'
 
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import React, { useState } from 'react'

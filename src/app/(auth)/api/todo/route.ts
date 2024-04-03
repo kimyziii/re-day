@@ -1,4 +1,4 @@
-import Todo from '@/app/models/todo'
+import Todo from '@/models/todo'
 import { Types } from 'mongoose'
 import { NextRequest, NextResponse } from 'next/server'
 

@@ -24,7 +24,7 @@ import {
 
 import UserContext from '@/app/(shared)/context/userContext'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ICategoryItem } from '@/app/models/categoryItem'
+import { ICategoryItem } from '@/models/categoryItem'
 import {
   createCategoryItem,
   getCategoryItem,

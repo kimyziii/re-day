@@ -1,5 +1,5 @@
 import connectMongo, { cached } from '@/app/(shared)/util/mongoose-connect'
-import Todo from '@/app/models/todo'
+import Todo from '@/models/todo'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {

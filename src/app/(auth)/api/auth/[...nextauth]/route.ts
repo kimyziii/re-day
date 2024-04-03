@@ -1,7 +1,7 @@
 import NextAuth from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
 import FacebookProvider from 'next-auth/providers/facebook'
-import { IUser } from '@/app/models/user'
+import { IUser } from '@/models/user'
 
 const handler = NextAuth({
   providers: [

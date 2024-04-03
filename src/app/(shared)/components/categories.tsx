@@ -15,7 +15,7 @@ import {
 } from '@radix-ui/react-select'
 import { getCategoryItem } from '@/app/(home)/service/category'
 import { useQuery } from '@tanstack/react-query'
-import { ICategoryItem } from '@/app/models/categoryItem'
+import { ICategoryItem } from '@/models/categoryItem'
 
 type CategoriesProps = {
   userId: string

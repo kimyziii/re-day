@@ -1,4 +1,4 @@
-import { ICategoryItem } from '@/app/models/categoryItem'
+import { ICategoryItem } from '@/models/categoryItem'
 import axios from 'axios'
 
 export const getCategoryItem = async (userId: string) => {

@@ -13,7 +13,7 @@ import UserContext from '@/app/(shared)/context/userContext'
 import { createTodo, deleteTodo } from '../service/todo'
 import { formatDate } from '@/app/(shared)/util/formatDate'
 import { getTodos } from '../service/todos'
-import { ITodo } from '@/app/models/todo'
+import { ITodo } from '@/models/todo'
 import { Input } from '@/app/(shared)/components/input'
 import { Button } from '@/app/(shared)/components/button'
 
