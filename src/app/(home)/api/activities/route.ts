@@ -1,4 +1,4 @@
-import connectMongo from '@/app/(shared)/util/mongoose-connect'
+import connectMongo, { cached } from '@/app/(shared)/util/mongoose-connect'
 import Activity from '@/app/models/activity'
 import { NextRequest, NextResponse } from 'next/server'
 
@@ -7,14 +7,14 @@ export const GET = async (request: NextRequest) => {
   const dailyDate = request.nextUrl.searchParams.get('dailyDate')
 
   try {
-    await connectMongo()
+    if (!cached.connection) await connectMongo()
 
     const response = await Activity.find({
       createdById: userId,
       dailyDate,
     })
-      .populate('categoryId')
-      .populate('createdById')
+      .populate({ path: 'categoryId', model: 'CategoryItem' })
+      .populate({ path: 'createdById', model: 'User' })
       .exec()
 
     return NextResponse.json({ status: 'success', data: response })

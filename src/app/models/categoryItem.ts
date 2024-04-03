@@ -14,12 +14,12 @@ const CategoryItemSchema = new mongoose.Schema<ICategoryItem>({
   value: String,
   userId: {
     type: Schema.Types.ObjectId,
-    ref: 'User',
+    ref: 'user',
   },
   type: String,
 })
 
 const CategoryItem =
-  models?.CategoryItem || model('CategoryItem', CategoryItemSchema)
+  models?.CategoryItem || model('categoryitem', CategoryItemSchema)
 
 export default CategoryItem

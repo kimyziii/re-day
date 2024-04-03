@@ -14,13 +14,13 @@ const ActivitySchema = new Schema<IActivity>(
     dailyDate: String,
     categoryId: {
       type: Schema.Types.ObjectId,
-      ref: 'CategoryItem',
+      ref: 'categoryitem',
     },
     summary: String,
     contents: String,
     createdById: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'user',
     },
   },
   {
@@ -28,5 +28,5 @@ const ActivitySchema = new Schema<IActivity>(
   },
 )
 
-const Activity = models.Activity || model<IActivity>('Activity', ActivitySchema)
+const Activity = models.Activity || model<IActivity>('activity', ActivitySchema)
 export default Activity

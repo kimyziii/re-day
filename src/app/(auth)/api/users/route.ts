@@ -1,9 +1,9 @@
-import connectMongo from '@/app/(shared)/util/mongoose-connect'
+import connectMongo, { cached } from '@/app/(shared)/util/mongoose-connect'
 import User from '@/app/models/user'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function POST(req: NextRequest) {
-  await connectMongo()
+  if (!cached.connection) await connectMongo()
 
   try {
     const { email } = await req.json()

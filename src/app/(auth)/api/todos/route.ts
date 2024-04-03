@@ -1,9 +1,9 @@
-import connectMongo from '@/app/(shared)/util/mongoose-connect'
+import connectMongo, { cached } from '@/app/(shared)/util/mongoose-connect'
 import Todo from '@/app/models/todo'
 import { NextRequest, NextResponse } from 'next/server'
 
 export async function GET(req: NextRequest) {
-  await connectMongo()
+  if (!cached.connection) await connectMongo()
 
   const userId = req.nextUrl.searchParams.get('userId')
   const todoDate = req.nextUrl.searchParams.get('targetDate')

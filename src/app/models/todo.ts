@@ -15,7 +15,7 @@ const TodoSchema = new Schema<ITodo>(
     content: String,
     userId: {
       type: Schema.Types.ObjectId,
-      ref: 'User',
+      ref: 'user',
     },
     isSuccess: Boolean,
   },
@@ -24,6 +24,6 @@ const TodoSchema = new Schema<ITodo>(
   },
 )
 
-const Todo = models?.Todo || model('Todo', TodoSchema)
+const Todo = models?.Todo || model('todo', TodoSchema)
 
 export default Todo
