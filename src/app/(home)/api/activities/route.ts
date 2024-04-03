@@ -13,8 +13,8 @@ export const GET = async (request: NextRequest) => {
       createdById: userId,
       dailyDate,
     })
-      .populate({ path: 'categoryId', model: 'CategoryItem' })
-      .populate({ path: 'createdById', model: 'User' })
+      .populate({ path: 'categoryId', model: 'categoryitem' })
+      .populate({ path: 'createdById', model: 'user' })
       .exec()
 
     return NextResponse.json({ status: 'success', data: response })
