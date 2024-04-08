@@ -66,7 +66,7 @@ const CommandComponent = () => {
           {data &&
             data.map((d: ActivityData) => {
               return (
-                <Dialog>
+                <Dialog key={d._id}>
                   <DialogTrigger>
                     <SearchResult
                       key={d._id}
