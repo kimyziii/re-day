@@ -38,6 +38,8 @@ export default function RootLayout({
   return (
     <html lang='ko' className={`${pretendard.className} ${rubik.variable}`}>
       <body className='flex'>
+        <div id='backdrop' />
+        <div id='portal' />
         <UserContextProvider>
           <QueryProviders>
             <ReactQueryDevtools initialIsOpen={true} />
