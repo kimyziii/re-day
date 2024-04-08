@@ -1,12 +1,11 @@
+import { Command, CommandInput, CommandList } from '@/components/ui/command'
 import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-  CommandSeparator,
-} from '@/components/ui/command'
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
 import { IActivity } from '@/models/activity'
 import { useQuery } from '@tanstack/react-query'
 import { useContext, useEffect, useState } from 'react'
@@ -58,11 +57,19 @@ const CommandComponent = () => {
           {data &&
             data.map((d: IActivity) => {
               return (
-                <SearchResult
-                  key={d._id}
-                  data={d}
-                  queryStr={debouncedSearchStr}
-                />
+                <Dialog>
+                  <DialogTrigger>
+                    <SearchResult
+                      key={d._id}
+                      data={d}
+                      queryStr={debouncedSearchStr}
+                    />
+                  </DialogTrigger>
+                  <DialogContent className='min-w-[50vw] max-w-[70vw] max-h-[75svh] px-4 py-3 mx-3 mt-4 text-sm font-light whitespace-pre-line break-all text-justify overflow-y-auto rounded-md'>
+                    <DialogTitle>{d.summary}</DialogTitle>
+                    <DialogDescription>{d.contents}</DialogDescription>
+                  </DialogContent>
+                </Dialog>
               )
             })}
         </div>

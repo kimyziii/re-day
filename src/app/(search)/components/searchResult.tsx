@@ -16,7 +16,7 @@ const SearchResult = ({
   return (
     <div
       key={data._id}
-      className='px-3 py-3 pb-3 text-sm border-b last:border-none hover:bg-primary-opacity'
+      className='text-left px-3 py-3 pb-3 text-sm border-b last:border-none hover:bg-primary-opacity'
     >
       {/* 제목 영역 */}
       {summaryIncludesQuery && (
