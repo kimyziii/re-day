@@ -1,4 +1,4 @@
-import React, { ChangeEvent, useContext, useState } from 'react'
+import React, { ChangeEvent, useContext, useEffect, useState } from 'react'
 import {
   Table,
   TableBody,
@@ -34,6 +34,9 @@ import { Button } from '@/app/(shared)/components/button'
 import { HoverCardContent, HoverCardTrigger } from '@radix-ui/react-hover-card'
 import { HoverCard } from '@/app/(shared)/components/hover-card'
 import { Types } from 'mongoose'
+import { createPortal } from 'react-dom'
+import Backdrop from '@/app/(shared)/components/backdrop'
+import CategoryEditModal from './categoryEditModal'
 
 const initialData = {
   label: '',
@@ -46,6 +49,15 @@ const CategorySettings = () => {
   const [newCategory, setNewCategory] =
     useState<Omit<ICategoryItem, '_id'>>(initialData)
   const [creationError, setCreationError] = useState<boolean>(false)
+  const [targetCategory, setTargetCategory] = useState<ICategoryItem | null>(
+    null,
+  )
+  const [categoryItemEdit, setCategoryItemEdit] = useState(false)
+  const [portalElem, setPortalElem] = useState<Element | null>(null)
+
+  useEffect(() => {
+    setPortalElem(document.getElementById('portal'))
+  }, [categoryItemEdit])
 
   const { user } = useContext(UserContext)
   const userId = user.id
@@ -80,6 +92,19 @@ const CategorySettings = () => {
     })
   }
 
+  const Modal = ({ category }: { category: ICategoryItem }) => {
+    return (
+      <>
+        <Backdrop handleCancel={() => setCategoryItemEdit(false)} />
+        <CategoryEditModal
+          userId={userId}
+          category={category}
+          cancelModal={() => setCategoryItemEdit(false)}
+        />
+      </>
+    )
+  }
+
   return (
     <div className='mt-2 space-y-1'>
       {creationError && (
@@ -98,6 +123,10 @@ const CategorySettings = () => {
           </AlertDialogContent>
         </AlertDialog>
       )}
+
+      {categoryItemEdit && portalElem
+        ? createPortal(<Modal category={targetCategory!} />, portalElem)
+        : null}
 
       {/* 카테고리 생성 라인 */}
       <div className='flex gap-2'>
@@ -158,12 +187,19 @@ const CategorySettings = () => {
                   <TableCell>{category.value}</TableCell>
                   <TableCell>
                     <div className='grid h-fit place-items-center'>
-                      <FaEdit size={16} />
+                      <FaEdit
+                        size={16}
+                        className='cursor-pointer'
+                        onClick={() => {
+                          setCategoryItemEdit(true)
+                          setTargetCategory(category)
+                        }}
+                      />
                     </div>
                   </TableCell>
                   <TableCell>
                     <div className='grid h-fit place-items-center'>
-                      <FaTrashAlt size={16} />
+                      <FaTrashAlt size={16} className='cursor-pointer' />
                     </div>
                   </TableCell>
                 </TableRow>

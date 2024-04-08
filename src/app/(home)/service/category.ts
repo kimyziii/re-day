@@ -28,3 +28,16 @@ export const createCategoryItem = async (data: Omit<ICategoryItem, '_id'>) => {
     throw error
   }
 }
+
+export const updateCategoryItem = async (data: {
+  label: string
+  value: string
+  itemId: string
+}) => {
+  try {
+    const response = await axios.patch(`/api/categoryItem`, data)
+    if (response.data.status === 200) return { status: 204 }
+  } catch (error: any) {
+    throw error
+  }
+}

@@ -43,3 +43,20 @@ export const POST = async (request: NextRequest) => {
     }
   }
 }
+
+export const PATCH = async (request: NextRequest) => {
+  if (!cached.connection) await connectMongo()
+  const { itemId, label, value } = await request.json()
+
+  const response = await CategoryItem.findByIdAndUpdate(itemId, {
+    label,
+    value,
+  })
+
+  try {
+    return NextResponse.json({ status: 200 })
+  } catch (error) {
+    console.log(error)
+    return NextResponse.json({ error })
+  }
+}
