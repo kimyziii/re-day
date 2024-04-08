@@ -46,10 +46,10 @@ const CommandComponent = () => {
     <Command className='fixed w-[60vw] h-[50svh] left-[50%] top-[50%] translate-x-[-50%] translate-y-[-50%] z-50'>
       <CommandInput
         onValueChange={(e) => handleChange(e)}
-        placeholder='Type a command or search...'
+        placeholder='검색어를 입력하세요.'
       />
       <CommandList>
-        {data?.length === 0 && (
+        {!data?.length && (
           <div className='py-6 text-center text-sm'>
             검색어에 맞는 결과가 없습니다.
           </div>
