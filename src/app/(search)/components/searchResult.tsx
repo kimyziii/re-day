@@ -1,5 +1,6 @@
 import { IActivity } from '@/models/activity'
 import React from 'react'
+import { ActivityData } from './command'
 import QueriedContents from './queriedContents'
 import QueriedSummary from './queriedSummary'
 
@@ -7,7 +8,7 @@ const SearchResult = ({
   data,
   queryStr,
 }: {
-  data: IActivity
+  data: ActivityData
   queryStr: string
 }) => {
   const summaryIncludesQuery = data.summary.includes(queryStr)

@@ -1,3 +1,4 @@
+import { formatStringToDate } from '@/app/(shared)/util/formatDate'
 import { Command, CommandInput, CommandList } from '@/components/ui/command'
 import {
   Dialog,
@@ -6,12 +7,20 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog'
-import { IActivity } from '@/models/activity'
+import { ICategoryItem } from '@/models/categoryItem'
 import { useQuery } from '@tanstack/react-query'
 import { useContext, useEffect, useState } from 'react'
 import UserContext from '../../(shared)/context/userContext'
 import { searchActivities } from '../../(shared)/service/activities'
 import SearchResult from './searchResult'
+
+export type ActivityData = {
+  _id: string
+  categoryId: ICategoryItem
+  contents: string
+  dailyDate: string
+  summary: string
+}
 
 const CommandComponent = () => {
   const DEBOUNCE_TIME = 300
@@ -55,7 +64,7 @@ const CommandComponent = () => {
         )}
         <div className='overflow-y-auto'>
           {data &&
-            data.map((d: IActivity) => {
+            data.map((d: ActivityData) => {
               return (
                 <Dialog>
                   <DialogTrigger>
@@ -66,7 +75,19 @@ const CommandComponent = () => {
                     />
                   </DialogTrigger>
                   <DialogContent className='min-w-[50vw] max-w-[70vw] max-h-[75svh] px-4 py-3 mx-3 mt-4 text-sm font-light whitespace-pre-line break-all text-justify overflow-y-auto rounded-md'>
-                    <DialogTitle>{d.summary}</DialogTitle>
+                    <DialogTitle className='space-y-2'>
+                      <div className='flex items-center justify-start gap-2'>
+                        <div className='flex items-center'>
+                          {d.categoryId.label}
+                        </div>
+                        <span className='w-[90%] font-semibold'>
+                          {d.summary}
+                        </span>
+                      </div>
+                      <div className='text-xs'>
+                        ( {formatStringToDate(d.dailyDate)} )
+                      </div>
+                    </DialogTitle>
                     <DialogDescription>{d.contents}</DialogDescription>
                   </DialogContent>
                 </Dialog>

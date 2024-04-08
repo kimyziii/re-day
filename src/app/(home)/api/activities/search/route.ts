@@ -20,6 +20,9 @@ export async function GET(req: NextRequest) {
       },
     ],
   })
+    .populate({ path: 'categoryId', model: 'categoryitem' })
+    .populate({ path: 'createdById', model: 'user' })
+    .exec()
 
   return NextResponse.json({ status: 200, data: response })
 }
