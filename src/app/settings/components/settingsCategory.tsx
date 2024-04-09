@@ -185,23 +185,27 @@ const CategorySettings = () => {
                 <TableRow key={category._id.toString()} className='h-10'>
                   <TableCell>{category.label}</TableCell>
                   <TableCell>{category.value}</TableCell>
-                  <TableCell>
-                    <div className='grid h-fit place-items-center'>
-                      <FaEdit
-                        size={16}
-                        className='cursor-pointer'
-                        onClick={() => {
-                          setCategoryItemEdit(true)
-                          setTargetCategory(category)
-                        }}
-                      />
-                    </div>
-                  </TableCell>
-                  <TableCell>
-                    <div className='grid h-fit place-items-center'>
-                      <FaTrashAlt size={16} className='cursor-pointer' />
-                    </div>
-                  </TableCell>
+                  {category.type !== 'public' && (
+                    <>
+                      <TableCell>
+                        <div className='grid h-fit place-items-center'>
+                          <FaEdit
+                            size={16}
+                            className='cursor-pointer'
+                            onClick={() => {
+                              setCategoryItemEdit(true)
+                              setTargetCategory(category)
+                            }}
+                          />
+                        </div>
+                      </TableCell>
+                      <TableCell>
+                        <div className='grid h-fit place-items-center'>
+                          <FaTrashAlt size={16} className='cursor-pointer' />
+                        </div>
+                      </TableCell>
+                    </>
+                  )}
                 </TableRow>
               )
             })}
