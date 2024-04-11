@@ -1,25 +1,28 @@
 import axios from 'axios'
 
-type CountByCategoriesProps = {
+type ActivitiesByCategoryProps = {
+  categoryId: string
   userId: string
 }
 
-export const getCountByCategories = async ({
+export const getActivitiesByCategory = async ({
+  categoryId,
   userId,
-}: CountByCategoriesProps) => {
-  try {
-    const response = await axios.get(
-      `/categories/api/categoryCount?userId=${userId}`,
-    )
-    const { status, result: data } = response.data
-    if (status === 200) {
-      return data
-    } else if (status === 204) {
-      return null
-    } else if (status === 400) {
-      throw new Error(response.data.error)
-    }
-  } catch (error) {
-    return error
+}: ActivitiesByCategoryProps) => {
+  const response = await axios.get(
+    `/categories/api/activities?categoryId=${categoryId}&userId=${userId}`,
+  )
+  const status = response.data.status
+
+  if (status === 200) {
+    return response.data.data
+  }
+
+  if (status === 204) {
+    return null
+  }
+
+  if (status === 400) {
+    throw new Error(response.data.error)
   }
 }

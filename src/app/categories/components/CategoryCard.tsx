@@ -1,12 +1,17 @@
 'use client'
 import { Card } from '@/app/(shared)/components/card'
 import { formatStringToDate } from '@/app/(shared)/util/formatDate'
+import { useRouter } from 'next/navigation'
 import { CountByCategoryType } from './CategoryWrapper'
 
 const CategoryCard = ({ category }: { category: CountByCategoryType }) => {
+  const router = useRouter()
   const { count, value: name, label, _id, lastDate } = category
   return (
-    <Card className='flex flex-col justify-between min-h-fit h-[100px] max-h-[300px] overflow-hidden px-3 py-2'>
+    <Card
+      onClick={() => router.push(`/categories/${_id}`)}
+      className='flex flex-col justify-between min-h-fit h-[100px] max-h-[300px] overflow-hidden px-3 py-2 cursor-pointer'
+    >
       <div className='flex justify-between items-start'>
         <div>
           <div className='text-2xl font-semibold'>{name}</div>
