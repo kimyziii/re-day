@@ -67,7 +67,12 @@ const NavBar = () => {
           className='cursor-pointer'
           onClick={() => router.push('/')}
         />
-        <AiOutlineSearch size={22} color='white' onClick={handleSearchOpen} />
+        <AiOutlineSearch
+          size={22}
+          color='white'
+          className='cursor-pointer'
+          onClick={handleSearchOpen}
+        />
         {isOpen && portalElem ? createPortal(<Modal />, portalElem) : null}
         <AiOutlineUnorderedList size={22} color='white' />
       </div>
