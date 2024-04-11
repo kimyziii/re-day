@@ -2,7 +2,7 @@
 import UserContext from '@/app/(shared)/context/userContext'
 import { useQuery } from '@tanstack/react-query'
 import { useContext } from 'react'
-import { getCountByCategories } from '../services/activities'
+import { getCountByCategories } from '../services/activitiesByCount'
 import CategoryCard from './CategoryCard'
 
 export type CountByCategoryType = {
