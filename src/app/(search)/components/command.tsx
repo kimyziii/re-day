@@ -1,4 +1,4 @@
-import { formatStringToDate } from '@/app/(shared)/util/formatDate'
+import { formatDailyDateToDate } from '@/app/(shared)/util/formatDate'
 import { Command, CommandInput, CommandList } from '@/components/ui/command'
 import {
   Dialog,
@@ -85,7 +85,7 @@ const CommandComponent = () => {
                         </span>
                       </div>
                       <div className='text-xs'>
-                        ( {formatStringToDate(d.dailyDate)} )
+                        ( {formatDailyDateToDate(d.dailyDate)} )
                       </div>
                     </DialogTitle>
                     <DialogDescription>{d.contents}</DialogDescription>
