@@ -26,14 +26,13 @@ const CategoryPage = ({ params }: CategoryPageProps) => {
     queryFn: () => getActivitiesByCategory({ categoryId, userId }),
     enabled: !!userId && !!categoryId,
   })
-  console.log(activities)
 
   const categoryDetail: ICategoryItem = activities
     ? activities[0].categoryId
     : null
 
   return (
-    <div className='flex flex-col w-[90%] mx-auto h-[90svh] bg-background justify-start mt-[3vh] space-y-2'>
+    <div className='flex flex-col w-[90%] mx-auto h-[90svh] bg-background justify-start mt-[5vh] space-y-2'>
       {/* 뒤로 돌아가기 */}
       <div
         className='flex flex-row items-center justify-start h-fit underline cursor-pointer mb-3'

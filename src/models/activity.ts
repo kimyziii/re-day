@@ -9,6 +9,8 @@ export interface IActivity {
   summary: string
   contents: string
   createdById: Types.ObjectId
+  createdAt?: string
+  updatedAt?: string
 }
 
 const ActivitySchema = new Schema<IActivity>(

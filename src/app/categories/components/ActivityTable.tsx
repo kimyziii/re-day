@@ -1,3 +1,4 @@
+import Backdrop from '@/app/(shared)/components/backdrop'
 import { Button } from '@/app/(shared)/components/button'
 import {
   Table,
@@ -16,7 +17,11 @@ import {
   PaginationState,
   useReactTable,
 } from '@tanstack/react-table'
+import { IActivity } from '@/models/activity'
 import { useState } from 'react'
+import { formatDailyDateToDate } from '@/app/(shared)/util/formatDate'
+
+type RowDataType = IActivity | null
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -27,6 +32,8 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
+  const [currentAtvt, setCurrentAtvt] = useState<RowDataType>(null)
+  const [atvtDetail, setAtvtDetail] = useState(false)
   const [pagination, setPagination] = useState<PaginationState>({
     pageIndex: 0,
     pageSize: 12,
@@ -46,7 +53,48 @@ export function DataTable<TData, TValue>({
 
   return (
     <div>
-      <Table>
+      {!!atvtDetail && currentAtvt && (
+        <div>
+          <Backdrop handleCancel={() => setAtvtDetail(false)} />
+          <div className='fixed top-[14svh] left-0 w-1/2 translate-x-1/2 bg-white z-40 rounded-md min-h-fit max-h-[50svh] p-4 space-y-4 overflow-y-auto'>
+            <div className='font-semibold text-lg'>
+              {currentAtvt.summary} <br />
+              {formatDailyDateToDate(currentAtvt.dailyDate)} <br />
+            </div>
+            <div className='font-light text-xs text-neutral-500'>
+              생성일자: <span> </span>
+              {currentAtvt.createdAt ? (
+                <span>
+                  {new Date(currentAtvt.createdAt).toLocaleDateString('ko-kr', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </span>
+              ) : null}
+              <br />
+              수정일자: <span> </span>
+              {currentAtvt.updatedAt ? (
+                <span>
+                  {new Date(currentAtvt.updatedAt).toLocaleDateString('ko-kr', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit',
+                  })}
+                </span>
+              ) : null}
+            </div>
+            <div className='whitespace-pre-line text-sm'>
+              {currentAtvt.contents}
+            </div>
+          </div>
+        </div>
+      )}
+      <Table className='w-[80vw]'>
         <TableHeader>
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow key={headerGroup.id}>
@@ -74,6 +122,10 @@ export function DataTable<TData, TValue>({
               <TableRow
                 key={row.id}
                 data-state={row.getIsSelected() && 'selected'}
+                onClick={() => {
+                  setAtvtDetail(true)
+                  setCurrentAtvt(row.original as IActivity)
+                }}
               >
                 {row.getVisibleCells().map((cell) => (
                   <TableCell

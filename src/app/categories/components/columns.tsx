@@ -5,8 +5,8 @@ export const columns: ColumnDef<IActivity>[] = [
   {
     accessorKey: 'summary',
     header: 'Summary',
-    size: 150,
-    maxSize: 150,
+    size: 300,
+    maxSize: 300,
   },
   {
     accessorKey: 'contents',
