@@ -21,13 +21,21 @@ import Alert from '@/app/(shared)/components/alertDialog'
 import { useContext } from 'react'
 import UserContext from '@/app/(shared)/context/userContext'
 import HomeTodoDialog from './home-todo-dialog'
+import { ITodo } from '@/models/todo'
 
 interface HomeTodayProps {
+  todos: ITodo[]
   currentDate: Date
   setCurrentDate: (prevDate: Date) => void
+  children?: React.ReactNode
 }
 
-const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
+const HomeToday = ({
+  todos,
+  currentDate,
+  setCurrentDate,
+  children,
+}: HomeTodayProps) => {
   const queryClient = useQueryClient()
   const dailyDate = formatDate(currentDate, 'yyyyMMdd') as string
 
@@ -48,16 +56,16 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
       })
     },
   })
-
   const handleDeleteActivity = (atvtId: string) => {
     mutateDelete(atvtId)
   }
 
   return (
     <Card className='w-full h-full col-span-2 overflow-y-auto text-center'>
+      {children}
       <CardHeader className='flex flex-row justify-evenly items-center'>
         <div className='flex justify-start items-center px-2 py-1 bg-secondary rounded-md'>
-          <HomeTodoDialog dailyDate={dailyDate} />
+          <HomeTodoDialog date={dailyDate} type='today' todos={todos} />
         </div>
         <div className='w-[80%] flex items-center justify-evenly'>
           <IoMdArrowDropleftCircle
@@ -88,11 +96,16 @@ const HomeToday = ({ currentDate, setCurrentDate }: HomeTodayProps) => {
             }}
           />
         </div>
-        <div
-          onClick={() => setCurrentDate(new Date())}
-          className='text-xs px-2 py-1 bg-secondary font-semibold rounded-md cursor-pointer'
-        >
-          TODAY
+        <div className='flex gap-1'>
+          <div
+            onClick={() => setCurrentDate(new Date())}
+            className='text-xs px-2 py-1 bg-secondary font-semibold rounded-md cursor-pointer'
+          >
+            TODAY
+          </div>
+          <div className='text-xs px-2 py-1 bg-secondary font-semibold rounded-md cursor-pointer laptop:hidden desktop:hidden'>
+            <HomeTodoDialog date={currentDate} type='tomorrow' todos={todos} />
+          </div>
         </div>
       </CardHeader>
       <CardContent className='space-y-2'>
