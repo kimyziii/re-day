@@ -1,5 +1,4 @@
 'use client'
-import HomeToday from '@/app/(home)/components/home-today'
 import HomeTomorrow from '@/app/(home)/components/home-tomorrow'
 import UserContext from '@/app/(shared)/context/userContext'
 import { formatDate } from '@/app/(shared)/util/formatDate'
